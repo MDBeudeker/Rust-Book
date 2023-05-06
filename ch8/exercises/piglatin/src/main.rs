@@ -21,13 +21,13 @@ fn pig_latin(word: String) -> String{
         if c == 'a' || c == 'e' || c == 'i' || c == 'u' || c == 'o'{
             checker = 1;
             if counter == 0{
-                s.push('y');
+                s.push('h');
             }
         }
         else if c == 'y' {
             let (_,t) = s.split_at(1);
             s = t.to_string();
-            s.push('y');
+            s.push('h');
     }
         else if checker == 0 {
                 let (_,t) = s.split_at(1);
