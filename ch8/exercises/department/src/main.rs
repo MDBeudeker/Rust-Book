@@ -29,11 +29,7 @@ fn main() {
     //         .push(String::from("Arend"));
     // }
 
-    println!("\n\nWhat do you want to do?");
-    println!("  To add an employee to a department, type 'add [Employeename] to [department]'");
-    println!("  To view all departments, type 'ls'");
-    println!("  To view all users and their department, type 'users'");
-    println!("  To view all users in a specifig department, type 'users in [department]'");
+    help_message();
 
     println!("  To quit - type 'quit'");
     loop{
@@ -51,9 +47,10 @@ fn main() {
 
             "add" | "Add"=> if user_input.len() == 4 {add_employee(& mut company,user_input[3],user_input[1]);} else {println!("invalid command")},
 
-            "users" | "Users" => if user_input.len() == 3 {list_employees_department(& mut company,user_input[1], user_input[2])}
-                                 else if user_input.len()== 1 {list_all_employees(& mut company)}, //Then let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically. ,
+            "users" | "Users" => if user_input.len() == 3 {list_employees_department(& company,user_input[1], user_input[2])}
+                                 else if user_input.len()== 1 {list_all_employees(& company)}, //Then let the user retrieve a list of all people in a department or all people in the company by department, sorted alphabetically. ,
 
+            "help" | "Help" => help_message(),
             "quit" | "Quit" => break(),
             
             _ => println!("invalid command"),
@@ -82,11 +79,12 @@ fn add_employee<'a> (company: &'a mut HashMap<String, Vec<String>>, department: 
     }
 }
 
-fn list_employees_department<'a> (company: &'a mut HashMap<String, Vec<String>>, word: &str, department: &str) {
+fn list_employees_department<'a> (company: &'a HashMap<String, Vec<String>>, word: &str, department: &str) {
     if word =="in" {
-        if let Some(dept_employees) = company.get_mut(department) {
-            dept_employees.sort();
-            let employee_list = dept_employees
+        if let Some(dept_employees) = company.get(department) {
+            let mut sorted_employees = dept_employees.clone();
+            sorted_employees.sort();
+            let employee_list = sorted_employees
                 .iter()
                 .map(|employee| format!("\n  - {}", employee))
                 .collect::<Vec<_>>()
@@ -116,4 +114,13 @@ fn list_all_employees(company: &HashMap<String, Vec<String>>){
         println!("  {} - {}", name, department);
     }
     
+}
+
+fn help_message() {
+    println!("\nWhat do you want to do?");
+    println!("  To add an employee to a department, type 'add [Employeename] to [department]'");
+    println!("  To view all departments, type 'ls'");
+    println!("  To view all users and their department, type 'users'");
+    println!("  To view all users in a specific department, type 'users in [department]'");
+    println!("  To view this message again, type 'help'");
 }
