@@ -9,6 +9,8 @@ use chrono::{DateTime, Utc, TimeZone};
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
 
+    println!("running server on 127.0.0.1:7878");
+
     for stream in listener.incoming() {
         let stream = stream.unwrap();
 
